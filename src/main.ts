@@ -8,6 +8,7 @@ async function bootstrap() {
   buildDocumentSwager(app);
   await app.listen(3000);
 }
+
 bootstrap();
 
 function buildDocumentSwager(app: INestApplication) {

@@ -4,6 +4,6 @@ import { TodoListController } from './todo-list.controller';
 
 @Module({
   controllers: [TodoListController],
-  providers: [TodoListService]
+  providers: [TodoListService],
 })
 export class TodoListModule {}

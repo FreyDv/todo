@@ -1,11 +1,11 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { TodoListService } from './todo-list.service';
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
@@ -21,12 +21,12 @@ export class TodoListController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findAllByUserId(@Param('id') id: string) {
     return this.todoListService.findAllByUserId(+id);
   }
 
   @Patch(':id')
-  update(
+  updateIsDone(
     @Param('id') id: string,
     @Body() updateTodoListDto: UpdateTodoListDto,
   ) {
