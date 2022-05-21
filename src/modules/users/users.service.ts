@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundException } from 'src/common/exceptions/entity-not-found.exception';
 import { Repository } from 'typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,11 +30,19 @@ export class UsersService {
   async findOne(id: number): Promise<OutputUserDto> {
     const user = await this.userRepository.findOne(id);
 
+    if (!user) {
+      throw new EntityNotFoundException('User not found');
+    }
+
     return OutputUserDto.fromUserEntity(user);
   }
 
   async getMe(id: number): Promise<OutputMeUserDto> {
     const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
 
     return OutputMeUserDto.fromUserEntity(user);
   }
