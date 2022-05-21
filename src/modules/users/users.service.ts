@@ -38,7 +38,7 @@ export class UsersService {
     return OutputMeUserDto.fromUserEntity(user);
   }
 
-  remove(id: number): Promise<UserEntity[]> {
-    return this.userRepository.remove(UserEntity[id]);
+  remove(id: number) {
+    return this.userRepository.delete(id);
   }
 }
