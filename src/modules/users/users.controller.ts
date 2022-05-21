@@ -37,4 +37,10 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }
+
+  // TODO: refactor before adding @GetCurrentUser()
+  @Get('me/:id')
+  getMe(@Param('id') id: number): Promise<OutputUserDto> {
+    return this.usersService.getMe(id);
+  }
 }
