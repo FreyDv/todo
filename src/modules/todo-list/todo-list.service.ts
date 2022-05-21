@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
 import { UpdateTodoListDto } from './dto/update-todo-list.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { TodoListEntity } from './entities/todo-list.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class TodoListService {

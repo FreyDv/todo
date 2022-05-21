@@ -7,10 +7,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { TodoListService } from './todo-list.service';
+import * as Swagger from '@nestjs/swagger';
+
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
 import { UpdateTodoListDto } from './dto/update-todo-list.dto';
+import { TodoListService } from './todo-list.service';
 
+@Swagger.ApiTags('Todo list')
 @Controller('todo-list')
 export class TodoListController {
   constructor(private readonly todoListService: TodoListService) {}
