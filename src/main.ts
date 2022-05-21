@@ -2,11 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   buildDocumentSwager(app);
-  await app.listen(3000);
+  const config = await app.get(ConfigService);
+  const PORT = config.get<number>('PORT');
+  await app.listen(PORT, () => {
+    console.log('Server star at port: ' + PORT);
+  });
 }
 
 bootstrap();
