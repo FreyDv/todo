@@ -13,7 +13,7 @@ async function bootstrap() {
   buildDocumentSwager(app);
 
   const config = await app.get(ConfigService);
-  const PORT = config.get<number>('PORT');
+  const PORT = config.get<number>('PORT') || 5500;
   await app.listen(PORT, () => {
     console.log('Server star at port: ' + PORT);
   });
