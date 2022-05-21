@@ -1,3 +1,4 @@
+import { UserEntity } from 'src/modules/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -5,8 +6,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { UserEntity } from '../../users/entities/user.entity';
 
 export const aliasTodoListEntity = 'todo-list';
 
@@ -24,6 +23,6 @@ export class TodoListEntity {
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'users-id' })
+  @JoinColumn({ name: 'user-id' })
   user: UserEntity;
 }
