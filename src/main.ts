@@ -20,7 +20,7 @@ bootstrap();
 function buildDocumentSwager(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('ToDo')
-    .setDescription('making todo list of user on nest.js')
+    .setDescription('making todo list of users on nest.js')
     .setVersion('0.0.1')
     .addTag('todo')
     .build();

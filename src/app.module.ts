@@ -4,13 +4,13 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodoListModule } from './modules/todo-list/todo-list.module';
-import { UserModule } from './modules/user/user.module';
+import { UsersModule } from './modules/users/users.module';
 import { PostgresModule } from './providers/postgres/postgres.module';
 
 @Module({
   imports: [
     PostgresModule,
-    UserModule,
+    UsersModule,
     TodoListModule,
     ConfigModule.forRoot({ envFilePath: '../.env' }),
   ],
