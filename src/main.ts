@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -7,7 +7,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
   buildDocumentSwager(app);
+
   const config = await app.get(ConfigService);
   const PORT = config.get<number>('PORT');
   await app.listen(PORT, () => {
@@ -22,7 +26,6 @@ function buildDocumentSwager(app: INestApplication) {
     .setTitle('ToDo')
     .setDescription('making todo list of users on nest.js')
     .setVersion('0.0.1')
-    .addTag('todo')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
