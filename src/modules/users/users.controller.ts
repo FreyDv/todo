@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { OutputUserDto } from './dto/output-user.dto';
 import { UsersService } from './users.service';
 
 @Swagger.ApiTags('Users')
@@ -14,13 +15,21 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Swagger.ApiOkResponse({
+    description: 'Return collection users',
+    type: OutputUserDto,
+  })
   @Get()
-  findAll() {
+  findAll(): Promise<OutputUserDto[]> {
     return this.usersService.findAll();
   }
 
+  @Swagger.ApiOkResponse({
+    description: 'Return public user',
+    type: OutputUserDto,
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<OutputUserDto> {
     return this.usersService.findOne(+id);
   }
 
