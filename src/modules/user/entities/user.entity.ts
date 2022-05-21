@@ -1,4 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
 import { TodoListEntity } from '../../todo-list/entities/todo-list.entity';
 
 export const aliasUserEntity = 'users';

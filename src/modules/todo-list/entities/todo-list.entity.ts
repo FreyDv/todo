@@ -5,6 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 import { UserEntity } from '../../user/entities/user.entity';
 
 export const aliasTodoListEntity = 'todo-list';
