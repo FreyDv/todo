@@ -1,5 +1,7 @@
-export class EntityNotFoundException extends Error {
+import {HttpException, HttpStatus} from "@nestjs/common";
+
+export class EntityNotFoundException extends HttpException {
   constructor(message = 'Entity not found') {
-    super(message);
+    super(message,HttpStatus.NOT_FOUND);
   }
 }
