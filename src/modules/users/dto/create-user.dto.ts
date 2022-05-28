@@ -1,11 +1,11 @@
-import { Type } from 'class-transformer';
-import { Allow, IsArray, IsString, ValidateNested } from 'class-validator';
+// import { Type } from 'class-transformer';
+import { Allow, IsString } from 'class-validator';
 
-class MetaCreateUserDto {
-  @IsArray()
-  @IsString({ each: true })
-  array: string[];
-}
+// class MetaCreateUserDto {
+//   @IsArray()
+//   @IsString({ each: true })
+//   array: string[];
+// }
 
 // class ResHttpDto<T> {
 //   success: boolean;
@@ -20,8 +20,8 @@ export class CreateUserDto {
   @Allow()
   privateField: string;
 
-  @Allow()
-  @ValidateNested()
-  @Type(() => MetaCreateUserDto)
-  meta: MetaCreateUserDto;
+  // @Allow()
+  // @ValidateNested()
+  // @Type(() => MetaCreateUserDto)
+  // meta: MetaCreateUserDto;
 }
