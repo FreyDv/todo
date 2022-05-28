@@ -19,35 +19,25 @@ export class UsersService {
     return this.userRepository.save(createUserDto);
   }
 
-  async findAll(): Promise<OutputUserDto[]> {
-    const users = await this.userRepository.find();
-
-    return users.map((user) => {
-      return OutputUserDto.fromUserEntity(user);
-    });
+  findAll(): Promise<UserEntity[]> {
+    return  this.userRepository.find();
   }
 
-  async findOne(id: number): Promise<OutputUserDto> {
-    const user = await this.userRepository.findOne(id);
+   findOne(id: number): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne(id);
+  }
 
-    if (!user) {
-      throw new EntityNotFoundException('User not found');
+  async getMe(id: number): Promise<UserEntity | undefined> {
+    return await this.userRepository.findOne(id);
+  }
+
+  async remove(id: number): Promise<boolean> {
+    let res = await this.userRepository.delete(id);
+    if (res.affected!==null && res.affected!==undefined){
+      if (res.affected>0){
+        return true
+      }
     }
-
-    return OutputUserDto.fromUserEntity(user);
-  }
-
-  async getMe(id: number): Promise<OutputMeUserDto> {
-    const user = await this.userRepository.findOne(id);
-
-    if (!user) {
-      throw new Error('User not found');
-    }
-
-    return OutputMeUserDto.fromUserEntity(user);
-  }
-
-  remove(id: number) {
-    return this.userRepository.delete(id);
+    return false;
   }
 }
