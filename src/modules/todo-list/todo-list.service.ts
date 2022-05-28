@@ -23,9 +23,7 @@ export class TodoListService {
   findAllByUserId(userId: number): Promise<TodoListEntity[]> {
     return this.todoListsRepository.find({
       where: {
-        user: {
-          id: userId,
-        },
+        userId: userId
       },
     });
   }
