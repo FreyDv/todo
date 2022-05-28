@@ -12,6 +12,7 @@ import * as Swagger from '@nestjs/swagger';
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
 import { UpdateTodoListDto } from './dto/update-todo-list.dto';
 import { TodoListService } from './todo-list.service';
+import {OutputTodoListDto} from "./dto/output-todo-list.dto";
 
 @Swagger.ApiTags('Todo list')
 @Controller('todo-list')
