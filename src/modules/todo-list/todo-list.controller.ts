@@ -24,7 +24,7 @@ export class TodoListController {
   }
 
   @Get(':id')
-  findAllByUserId(@Param('id') id: string) {
+  findAllByUserId(@Param('id') id: string):Promise<OutputTodoListDto[]> {
     return this.todoListService.findAllByUserId(+id);
   }
 
