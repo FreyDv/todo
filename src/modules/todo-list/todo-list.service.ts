@@ -14,7 +14,7 @@ export class TodoListService {
   ) {}
 
   create(createTodoListDto: CreateTodoListDto) {
-    return this.todoListsRepository.create({
+    return this.todoListsRepository.save({
       ...createTodoListDto,
       isDone: false,
     });
