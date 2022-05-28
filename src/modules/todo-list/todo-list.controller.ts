@@ -31,7 +31,7 @@ export class TodoListController {
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateTodoListDto: UpdateTodoListDto,
   ) :Promise<OutputTodoListDto> {
     return this.httpTodoListService.update(+id, updateTodoListDto);
