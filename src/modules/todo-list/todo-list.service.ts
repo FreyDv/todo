@@ -28,7 +28,7 @@ export class TodoListService {
     });
   }
 
-  updateIsDone(
+  update(
     id: number,
     updateTodoListDto: UpdateTodoListDto,
   ): Promise<TodoListEntity> {
