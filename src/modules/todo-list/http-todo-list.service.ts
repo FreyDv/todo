@@ -3,6 +3,7 @@ import {TodoListService} from "./todo-list.service";
 import {CreateTodoListDto} from "./dto/create-todo-list.dto";
 import {OutputTodoListDto} from "./dto/output-todo-list.dto";
 import {EntityNotFoundException} from "../../common/exceptions/entity-not-found.exception";
+import {UpdateTodoListDto} from "./dto/update-todo-list.dto";
 
 @Injectable()
 export class HttpTodoListService {
@@ -22,5 +23,10 @@ export class HttpTodoListService {
             return OutputTodoListDto.fromTodoListEntity(todo);
         })
         return result;
+    }
+
+    async update(id: number,updateTodoListDto:UpdateTodoListDto):Promise<OutputTodoListDto>{
+        let result = await this.todoListService.update(id,updateTodoListDto);
+        return OutputTodoListDto.fromTodoListEntity(result);
     }
 }
