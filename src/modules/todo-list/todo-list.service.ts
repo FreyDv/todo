@@ -13,7 +13,7 @@ export class TodoListService {
     private readonly todoListsRepository: Repository<TodoListEntity>,
   ) {}
 
-  create(createTodoListDto: CreateTodoListDto) {
+  create(createTodoListDto: CreateTodoListDto):Promise<TodoListEntity> {
     return this.todoListsRepository.save({
       ...createTodoListDto,
       isDone: false,
