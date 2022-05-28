@@ -36,4 +36,7 @@ export class HttpUsersService{
         }
         return OutputMeUserDto.fromUserEntity(result);
     }
+    async remove(id:number){
+        return  this.usersService.remove(id);
+    }
 }
