@@ -12,7 +12,6 @@ import { EntityNotFoundException } from 'src/common/exceptions/entity-not-found.
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
-import { UsersService } from './users.service';
 import {HttpUsersService} from "./http-users.service";
 
 @Swagger.ApiTags('Users')
@@ -21,7 +20,7 @@ export class UsersController {
   constructor(private readonly httpUsersService: HttpUsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  create(@Body() createUserDto: CreateUserDto): Promise<OutputUserDto> {
     return this.httpUsersService.create(createUserDto);
   }
 
