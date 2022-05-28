@@ -13,6 +13,7 @@ import { EntityNotFoundException } from 'src/common/exceptions/entity-not-found.
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
 import {HttpUsersService} from "./http-users.service";
+import {OutputMeUserDto} from "./dto/output-me-user.dto";
 
 @Swagger.ApiTags('Users')
 @Controller('users')
@@ -63,7 +64,7 @@ export class UsersController {
 
   // TODO: refactor before adding @GetCurrentUser()
   @Get('me/:id')
-  getMe(@Param('id') id: number): Promise<OutputUserDto> {
+  getMe(@Param('id') id: number): Promise<OutputMeUserDto> {
     return this.httpUsersService.getMe(id);
   }
 }
