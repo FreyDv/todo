@@ -29,4 +29,8 @@ export class HttpTodoListService {
         let result = await this.todoListService.update(id,updateTodoListDto);
         return OutputTodoListDto.fromTodoListEntity(result);
     }
+
+    async remove(id: number): Promise<boolean>{
+        return await this.todoListService.remove(id);
+    }
 }
