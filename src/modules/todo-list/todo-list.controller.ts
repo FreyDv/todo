@@ -39,6 +39,6 @@ export class TodoListController {
 
   @Delete(':id')
   remove(@Param('id') id: string): Promise<boolean> {
-    return this.todoListService.remove(+id);
+    return this.httpTodoListService.remove(+id);
   }
 }
