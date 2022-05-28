@@ -29,4 +29,11 @@ export class HttpUsersService{
         }
         return OutputUserDto.fromUserEntity(result);
     }
+    async getMe(id: number): Promise<OutputMeUserDto>{
+        let result = await this.usersService.findOne(id);
+        if(!result){
+            throw new EntityNotFoundException('User not found');
+        }
+        return OutputMeUserDto.fromUserEntity(result);
+    }
 }
