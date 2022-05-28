@@ -35,7 +35,13 @@ export class TodoListService {
     return this.todoListsRepository.save({ id, ...updateTodoListDto });
   }
 
-  remove(id: number): Promise<TodoListEntity[]> {
-    return this.todoListsRepository.remove(TodoListEntity[id]);
+  async remove(id: number): Promise<boolean> {
+    let res = await this.todoListsRepository.delete(TodoListEntity[id]);
+    if (res.affected!==null && res.affected!==undefined){
+      if (res.affected>0){
+        return true;
+      }
+    }
+    return false;
   }
 }
