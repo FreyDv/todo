@@ -24,5 +24,5 @@ export class TodoListEntity {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user-id' })
-  user: UserEntity;
+  userId: UserEntity;
 }
