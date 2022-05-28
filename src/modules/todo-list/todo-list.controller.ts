@@ -19,7 +19,7 @@ export class TodoListController {
   constructor(private readonly todoListService: TodoListService) {}
 
   @Post()
-  create(@Body() createTodoListDto: CreateTodoListDto) {
+  create(@Body() createTodoListDto: CreateTodoListDto):Promise<OutputTodoListDto> {
     return this.todoListService.create(createTodoListDto);
   }
 
