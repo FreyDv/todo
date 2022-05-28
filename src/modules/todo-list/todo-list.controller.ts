@@ -32,8 +32,8 @@ export class TodoListController {
   update(
     @Param('id') id: string,
     @Body() updateTodoListDto: UpdateTodoListDto,
-  ) {
-    return this.todoListService.updateIsDone(+id, updateTodoListDto);
+  ) :Promise<OutputTodoListDto> {
+    return this.todoListService.update(+id, updateTodoListDto);
   }
 
   @Delete(':id')
