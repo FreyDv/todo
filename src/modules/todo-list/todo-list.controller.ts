@@ -10,9 +10,9 @@ import {
 import * as Swagger from '@nestjs/swagger';
 
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
+import { OutputTodoListDto } from './dto/output-todo-list.dto';
 import { UpdateTodoListDto } from './dto/update-todo-list.dto';
-import {OutputTodoListDto} from "./dto/output-todo-list.dto";
-import {HttpTodoListService} from "./http-todo-list.service";
+import { HttpTodoListService } from './http-todo-list.service';
 
 @Swagger.ApiTags('Todo list')
 @Controller('todo-list')
@@ -20,12 +20,14 @@ export class TodoListController {
   constructor(private readonly httpTodoListService: HttpTodoListService) {}
 
   @Post()
-  create(@Body() createTodoListDto: CreateTodoListDto):Promise<OutputTodoListDto> {
+  create(
+    @Body() createTodoListDto: CreateTodoListDto,
+  ): Promise<OutputTodoListDto> {
     return this.httpTodoListService.create(createTodoListDto);
   }
 
   @Get(':id')
-  findAllByUserId(@Param('id') id: number):Promise<OutputTodoListDto[]> {
+  findAllByUserId(@Param('id') id: number): Promise<OutputTodoListDto[]> {
     return this.httpTodoListService.findAllByUserId(+id);
   }
 
@@ -33,7 +35,7 @@ export class TodoListController {
   update(
     @Param('id') id: number,
     @Body() updateTodoListDto: UpdateTodoListDto,
-  ) :Promise<OutputTodoListDto> {
+  ): Promise<OutputTodoListDto> {
     return this.httpTodoListService.update(+id, updateTodoListDto);
   }
 

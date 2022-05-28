@@ -1,17 +1,10 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
-import {HttpUsersService} from "./http-users.service";
-import {OutputMeUserDto} from "./dto/output-me-user.dto";
+import { HttpUsersService } from './http-users.service';
 
 @Swagger.ApiTags('Users')
 @Controller('users')

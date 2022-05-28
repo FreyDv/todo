@@ -13,7 +13,7 @@ export class TodoListService {
     private readonly todoListsRepository: Repository<TodoListEntity>,
   ) {}
 
-  create(createTodoListDto: CreateTodoListDto):Promise<TodoListEntity> {
+  create(createTodoListDto: CreateTodoListDto): Promise<TodoListEntity> {
     return this.todoListsRepository.save({
       ...createTodoListDto,
       isDone: false,
@@ -23,7 +23,7 @@ export class TodoListService {
   findAllByUserId(userId: number): Promise<TodoListEntity[]> {
     return this.todoListsRepository.find({
       where: {
-        userId: userId
+        userId: userId,
       },
     });
   }
@@ -36,9 +36,9 @@ export class TodoListService {
   }
 
   async remove(id: number): Promise<boolean> {
-    let res = await this.todoListsRepository.delete(TodoListEntity[id]);
-    if (res.affected!==null && res.affected!==undefined){
-      if (res.affected>0){
+    const res = await this.todoListsRepository.delete(TodoListEntity[id]);
+    if (res.affected !== null && res.affected !== undefined) {
+      if (res.affected > 0) {
         return true;
       }
     }

@@ -1,10 +1,10 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {HttpAdapterHost, NestFactory} from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import {HttpExceptionFilter} from "./common/exceptions-filter/http.exceptions.filter";
+import { HttpExceptionFilter } from './common/exceptions-filter/http.exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
