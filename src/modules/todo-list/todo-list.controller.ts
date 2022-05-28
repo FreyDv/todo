@@ -21,7 +21,7 @@ export class TodoListController {
 
   @Post()
   create(@Body() createTodoListDto: CreateTodoListDto):Promise<OutputTodoListDto> {
-    return this.todoListService.create(createTodoListDto);
+    return this.httpTodoListService.create(createTodoListDto);
   }
 
   @Get(':id')
