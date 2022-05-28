@@ -3,12 +3,10 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Post,
 } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
-import { EntityNotFoundException } from 'src/common/exceptions/entity-not-found.exception';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
@@ -52,15 +50,7 @@ export class UsersController {
   })
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<OutputUserDto> {
-    try {
-      return await this.httpUsersService.findOne(id);
-    } catch (error) {
-      if (error instanceof EntityNotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-
-      throw error;
-    }
+    return await this.httpUsersService.findOne(id);
   }
 
   @Delete(':id')
