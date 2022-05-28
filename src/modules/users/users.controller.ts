@@ -1,18 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
+import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
+import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
-import { ForbiddenUserGuard } from './guards/forbidden-user.guard';
 import { HttpUsersService } from './http-users.service';
 
 @Swagger.ApiTags('Users')
@@ -60,13 +53,10 @@ export class UsersController {
     return this.httpUsersService.remove(+id);
   }
 
-  // TODO: refactor before adding @GetCurrentUser()
-  @Swagger.ApiForbiddenResponse({
-    description: 'User has x-access-token === FORBIDDEN_USER',
-  })
-  @UseGuards(ForbiddenUserGuard)
-  @Get('me/:id')
-  getMe(@Param('id') id: number): Promise<OutputMeUserDto> {
-    return this.httpUsersService.getMe(id);
+  @ForbiddenUser()
+  @Get('user/me')
+  getMe(@CurrentUserAuth('id') userId: number): Promise<OutputMeUserDto> {
+    console.log('CurrentUserAuth', userId);
+    return this.httpUsersService.getMe(userId || 1);
   }
 }
