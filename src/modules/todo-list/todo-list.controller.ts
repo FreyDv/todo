@@ -29,7 +29,7 @@ export class TodoListController {
   }
 
   @Patch(':id')
-  updateIsDone(
+  update(
     @Param('id') id: string,
     @Body() updateTodoListDto: UpdateTodoListDto,
   ) {
