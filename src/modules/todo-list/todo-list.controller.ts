@@ -38,7 +38,7 @@ export class TodoListController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<boolean> {
+  remove(@Param('id') id: number): Promise<boolean> {
     return this.httpTodoListService.remove(+id);
   }
 }
