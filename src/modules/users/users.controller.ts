@@ -12,7 +12,7 @@ import * as Swagger from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
-import { TempUserGuard } from './guards/temp-user.guard';
+import { ForbiddenUserGuard } from './guards/forbidden-user.guard';
 import { HttpUsersService } from './http-users.service';
 
 @Swagger.ApiTags('Users')
@@ -61,7 +61,10 @@ export class UsersController {
   }
 
   // TODO: refactor before adding @GetCurrentUser()
-  @UseGuards(TempUserGuard)
+  @Swagger.ApiForbiddenResponse({
+    description: 'User has x-access-token === FORBIDDEN_USER',
+  })
+  @UseGuards(ForbiddenUserGuard)
   @Get('me/:id')
   getMe(@Param('id') id: number): Promise<OutputMeUserDto> {
     return this.httpUsersService.getMe(id);

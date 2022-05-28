@@ -4,7 +4,7 @@ import { Request } from 'express';
 
 import usersConfig from '../config/user.config';
 
-export class TempUserGuard implements CanActivate {
+export class ForbiddenUserGuard implements CanActivate {
   private readonly forbiddenUser: string | undefined;
 
   constructor(
