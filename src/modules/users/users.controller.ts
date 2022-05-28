@@ -29,6 +29,12 @@ export class UsersController {
     description: 'Return collection users',
     type: OutputUserDto,
   })
+  @Swagger.ApiNotFoundResponse({
+    description: 'No one Users found',
+  })
+  @Swagger.ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
   @Get()
   findAll(): Promise<OutputUserDto[]> {
     return this.httpUsersService.findAll();
