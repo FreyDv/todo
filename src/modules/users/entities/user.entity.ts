@@ -15,6 +15,12 @@ export class UserEntity {
   @Column({ nullable: false })
   privateField: string;
 
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
+
   @OneToMany(() => TodoListEntity, (todoList) => todoList.user)
   todoList: TodoListEntity[];
 }
