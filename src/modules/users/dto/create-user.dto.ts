@@ -1,5 +1,5 @@
 // import { Type } from 'class-transformer';
-import { Allow, IsString } from 'class-validator';
+import { Allow, IsEmail, IsString, MinLength } from 'class-validator';
 
 // class MetaCreateUserDto {
 //   @IsArray()
@@ -20,6 +20,12 @@ export class CreateUserDto {
   @Allow()
   privateField: string;
 
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(4)
+  password: string;
   // @Allow()
   // @ValidateNested()
   // @Type(() => MetaCreateUserDto)
