@@ -20,8 +20,24 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne(id);
+  findOne(id: number): Promise<UserEntity | undefined>;
+  findOne(email: string): Promise<UserEntity | undefined>;
+
+  async findOne(findProperty: unknown): Promise<unknown | undefined> {
+    let user;
+    if (typeof findProperty === 'string') {
+      user = await this.userRepository.find({
+        where: {
+          email: findProperty,
+        },
+      });
+      if (!Array.isArray(user)) {
+        return user;
+      }
+    }
+    if (typeof findProperty === 'number') {
+      return this.userRepository.findOne(findProperty);
+    }
   }
 
   async remove(id: number): Promise<boolean> {
