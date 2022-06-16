@@ -20,6 +20,13 @@ export class CreateUserDto {
   @Allow()
   privateField: string;
 
+  // @IsEmail()
+  // email: string;
+  //
+  // @IsString()
+  // @MinLength(4)
+  // password: string;
+
   // @Allow()
   // @ValidateNested()
   // @Type(() => MetaCreateUserDto)

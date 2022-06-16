@@ -1,6 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
+import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
+import JwtAuthenticationGuard from '../auth/guard/JwtAuthenticationGuard';
+import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
@@ -42,6 +45,7 @@ export class UsersController {
     description: 'Internal server error',
   })
   @Get(':id')
+  @UseGuards(JwtAuthenticationGuard)
   async findOne(@Param('id') id: number): Promise<OutputUserDto> {
     return await this.httpUsersService.findOne(id);
   }
@@ -51,9 +55,10 @@ export class UsersController {
     return this.httpUsersService.remove(+id);
   }
 
-  // TODO: refactor before adding @GetCurrentUser()
-  @Get('me/:id')
-  getMe(@Param('id') id: number): Promise<OutputMeUserDto> {
-    return this.httpUsersService.getMe(id);
+  @ForbiddenUser()
+  @Get('user/me')
+  getMe(@CurrentUserAuth('id') userId: number): Promise<OutputMeUserDto> {
+    console.log('CurrentUserAuth', userId);
+    return this.httpUsersService.getMe(userId || 1);
   }
 }

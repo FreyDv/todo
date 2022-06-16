@@ -5,11 +5,7 @@ export class OutputMeUserDto {
   name: string;
   privateField: string;
 
-  static fromUserEntity({
-    id,
-    name,
-    privateField,
-  }: UserEntity): OutputMeUserDto {
+  static fromUserEntity({ id, name, privateField }: UserEntity): OutputMeUserDto {
     return {
       id,
       name,

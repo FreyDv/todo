@@ -1,10 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 import { EntityNotFoundException } from '../exceptions/entity-not-found.exception';
@@ -16,7 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     let status = exception.getStatus();
-    let msg = '';
+    let msg: string | undefined;
 
     if (exception instanceof EntityNotFoundException) {
       msg = exception.message + ':)';

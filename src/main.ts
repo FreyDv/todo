@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/exceptions-filter/http.exceptions.filter';
@@ -14,6 +15,8 @@ async function bootstrap() {
   buildDocumentSwager(app);
 
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  app.use(cookieParser());
 
   const config = await app.get(ConfigService);
   const PORT = config.get<number>('PORT') || 5500;
