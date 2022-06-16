@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
 import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
+import JwtAuthenticationGuard from '../auth/guard/JwtAuthenticationGuard';
 import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';
@@ -44,6 +45,7 @@ export class UsersController {
     description: 'Internal server error',
   })
   @Get(':id')
+  @UseGuards(JwtAuthenticationGuard)
   async findOne(@Param('id') id: number): Promise<OutputUserDto> {
     return await this.httpUsersService.findOne(id);
   }

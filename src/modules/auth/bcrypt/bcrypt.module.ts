@@ -4,5 +4,6 @@ import { BcryptService } from './bcrypt.service';
 
 @Module({
   exports: [BcryptService],
+  providers: [BcryptService],
 })
 export class BcryptModule {}

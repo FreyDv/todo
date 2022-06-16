@@ -9,10 +9,10 @@ import { UserEntity } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>, // private readonly auth: AuthService,
   ) {}
 
-  create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     return this.userRepository.save(createUserDto);
   }
 
@@ -20,24 +20,20 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<UserEntity | undefined>;
-  findOne(email: string): Promise<UserEntity | undefined>;
+  findOne(id: number): Promise<UserEntity | undefined> {
+    return this.userRepository.findOne(id);
+  }
 
-  async findOne(findProperty: unknown): Promise<unknown | undefined> {
-    let user;
-    if (typeof findProperty === 'string') {
-      user = await this.userRepository.find({
-        where: {
-          email: findProperty,
-        },
-      });
-      if (!Array.isArray(user)) {
-        return user;
-      }
-    }
-    if (typeof findProperty === 'number') {
-      return this.userRepository.findOne(findProperty);
-    }
+  async findOneByEmail(email: string): Promise<UserEntity | undefined> {
+    const user = await this.userRepository.find({
+      where: {
+        email: email,
+      },
+    });
+
+    if (Array.isArray(user) && user.length === 1) {
+      return user[0];
+    } else return undefined;
   }
 
   async remove(id: number): Promise<boolean> {
