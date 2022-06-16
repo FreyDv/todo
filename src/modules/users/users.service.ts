@@ -24,18 +24,6 @@ export class UsersService {
     return this.userRepository.findOne(id);
   }
 
-  async findOneByEmail(email: string): Promise<UserEntity | undefined> {
-    const user = await this.userRepository.find({
-      where: {
-        email: email,
-      },
-    });
-
-    if (Array.isArray(user) && user.length === 1) {
-      return user[0];
-    } else return undefined;
-  }
-
   async remove(id: number): Promise<boolean> {
     const res = await this.userRepository.delete(id);
     if (res.affected !== null && res.affected !== undefined) {

@@ -3,7 +3,6 @@ import * as Swagger from '@nestjs/swagger';
 
 import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
 import JwtAuthenticationGuard from '../auth/guard/JwtAuthenticationGuard';
-import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
@@ -55,7 +54,7 @@ export class UsersController {
     return this.httpUsersService.remove(+id);
   }
 
-  @ForbiddenUser()
+  @UseGuards(JwtAuthenticationGuard)
   @Get('user/me')
   getMe(@CurrentUserAuth('id') userId: number): Promise<OutputMeUserDto> {
     console.log('CurrentUserAuth', userId);

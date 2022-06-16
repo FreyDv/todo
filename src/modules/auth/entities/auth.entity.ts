@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserEntity } from '../../users/entities/user.entity';
 
@@ -16,5 +16,6 @@ export class AuthEntity {
   password: string;
 
   @OneToOne(() => UserEntity, (user) => user.id)
+  @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 }

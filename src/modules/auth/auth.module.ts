@@ -4,7 +4,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from '../users/users.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { BcryptModule } from './bcrypt/bcrypt.module';
@@ -29,10 +28,9 @@ import { LocalStrategy } from './strategy/local.strategy';
         signOptions: { expiresIn: configService.get('JWT_EXPIRATION_TIME') },
       }),
     }),
-    UsersModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtStrategy, PassportModule],
+  exports: [],
   controllers: [AuthController],
 })
 export class AuthModule {}

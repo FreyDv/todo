@@ -16,9 +16,7 @@ export class init1653116517454 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "todo-list" DROP CONSTRAINT "FK_95af922cf971f3a88e076aad828"`,
-    );
+    await queryRunner.query(`ALTER TABLE "todo-list" DROP CONSTRAINT "FK_95af922cf971f3a88e076aad828"`);
     await queryRunner.query(`DROP TABLE "todo-list"`);
     await queryRunner.query(`DROP TABLE "users"`);
   }

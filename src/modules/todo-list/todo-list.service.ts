@@ -28,10 +28,7 @@ export class TodoListService {
     });
   }
 
-  update(
-    id: number,
-    updateTodoListDto: UpdateTodoListDto,
-  ): Promise<TodoListEntity> {
+  update(id: number, updateTodoListDto: UpdateTodoListDto): Promise<TodoListEntity> {
     return this.todoListsRepository.save({ id, ...updateTodoListDto });
   }
 

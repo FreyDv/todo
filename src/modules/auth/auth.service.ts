@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BcryptService } from 'src/modules/auth/bcrypt/bcrypt.service';
 import { Repository } from 'typeorm';
 
+import { UserEntity } from '../users/entities/user.entity';
 import { AuthDto } from './dto/auth.dto';
 import { AuthOutputDto } from './dto/auth.output-dto';
 import { AuthEntity } from './entities/auth.entity';
@@ -13,11 +14,7 @@ export class AuthService {
   constructor(
     @InjectRepository(AuthEntity)
     private readonly authRepository: Repository<AuthEntity>,
-
-    // private readonly usersService: UsersService,
-
     private readonly bcrypt: BcryptService,
-
     private readonly jwtService: JwtService,
   ) {}
 
@@ -75,10 +72,12 @@ export class AuthService {
     return this.authRepository.save(authDto);
   }
 
-  async getById(id: number): Promise<AuthEntity> {
-    const authEntity = await this.authRepository.findOne(id);
-    if (authEntity) {
-      return authEntity;
+  async getUser(id: number): Promise<UserEntity> {
+    const authEntity = await this.authRepository.findOne(id, {
+      relations: ['user'],
+    });
+    if (authEntity?.user) {
+      return authEntity.user;
     } else throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
   }
 }
