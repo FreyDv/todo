@@ -16,7 +16,6 @@ import { UsersService } from './users.service';
     ConfigModule.forRoot({ load: [usersConfig] }),
     BcryptModule,
     JwtModule,
-    // AuthModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, HttpUsersService],
