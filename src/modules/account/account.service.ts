@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BcryptService } from 'src/modules/account/bcrypt/bcrypt.service';
 import { Repository } from 'typeorm';
 
+import { UserEntity } from '../users/entities/user.entity';
 import { AuthDto } from './dto/auth.dto';
 import { AuthOutputDto } from './dto/auth.output-dto';
 import { AccountEntity } from './entities/account.entity';
@@ -17,8 +18,20 @@ export class AccountService {
     private readonly jwtService: JwtService,
   ) {}
 
+  async create(authDto: AuthDto): Promise<AccountEntity | undefined> {
+    return this.authRepository.save(authDto);
+  }
+
+  async findAccountByEmail(email: string): Promise<AccountEntity | undefined> {
+    return await this.authRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+  }
+
   async registration(authDto: AuthDto): Promise<AuthOutputDto> {
-    if (await this.findAuthCardByEmail(authDto.email)) {
+    if (await this.findAccountByEmail(authDto.email)) {
       throw new Error('Entered email already exist!');
     } else {
       authDto.password = await this.bcrypt.encodePassword(authDto.password);
@@ -39,7 +52,7 @@ export class AccountService {
   }
 
   async authentication(authDto: AuthDto): Promise<boolean> {
-    const authEntity = await this.findAuthCardByEmail(authDto.email);
+    const authEntity = await this.findAccountByEmail(authDto.email);
     if (authEntity) {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
       if (isPasswordsEqual) {

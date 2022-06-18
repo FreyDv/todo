@@ -21,7 +21,7 @@ export class AccountController {
   @Post('/login')
   @UseGuards(LocalAuthenticationGuard)
   async authentication(@Body() authDto: AuthDto, @Res() response: Response) {
-    const user = await this.authService.findAuthCardByEmail(authDto.email);
+    const user = await this.authService.findAccoundByEnail(authDto.email);
     if (user) {
       const userJwt = this.authService.getCookieWithJwtToken(user.id);
       response.setHeader('Set-Cookie', userJwt);
