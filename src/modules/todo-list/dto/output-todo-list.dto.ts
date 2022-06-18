@@ -5,11 +5,7 @@ export class OutputTodoListDto {
   title: string;
   isDone: boolean;
 
-  static fromTodoListEntity({
-    id,
-    title,
-    isDone,
-  }: TodoListEntity): OutputTodoListDto {
+  static fromTodoListEntity({ id, title, isDone }: TodoListEntity): OutputTodoListDto {
     return {
       id,
       title,

@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
 import { CreateTodoListDto } from './dto/create-todo-list.dto';
@@ -20,9 +12,7 @@ export class TodoListController {
   constructor(private readonly httpTodoListService: HttpTodoListService) {}
 
   @Post()
-  create(
-    @Body() createTodoListDto: CreateTodoListDto,
-  ): Promise<OutputTodoListDto> {
+  create(@Body() createTodoListDto: CreateTodoListDto): Promise<OutputTodoListDto> {
     return this.httpTodoListService.create(createTodoListDto);
   }
 
@@ -32,10 +22,7 @@ export class TodoListController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateTodoListDto: UpdateTodoListDto,
-  ): Promise<OutputTodoListDto> {
+  update(@Param('id') id: number, @Body() updateTodoListDto: UpdateTodoListDto): Promise<OutputTodoListDto> {
     return this.httpTodoListService.update(+id, updateTodoListDto);
   }
 

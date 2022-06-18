@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/c
 import * as Swagger from '@nestjs/swagger';
 
 import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
-import JwtAuthenticationGuard from '../auth/guard/JwtAuthenticationGuard';
+import JwtAuthenticationGuard from '../account/guard/JwtAuthenticationGuard';
 import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { OutputMeUserDto } from './dto/output-me-user.dto';

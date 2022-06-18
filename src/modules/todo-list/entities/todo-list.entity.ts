@@ -1,11 +1,5 @@
 import { UserEntity } from 'src/modules/users/entities/user.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export const aliasTodoListEntity = 'todo-list';
 
