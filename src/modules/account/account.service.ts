@@ -19,7 +19,7 @@ export class AccountService {
 
   async registration(authDto: AuthDto): Promise<AuthOutputDto> {
     if (await this.findAuthCardByEmail(authDto.email)) {
-      throw new HttpException('This email address is already being used!', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new Error('Entered email already exist!');
     } else {
       authDto.password = await this.bcrypt.encodePassword(authDto.password);
       const authCreateResult = await this.create(authDto);
@@ -44,9 +44,8 @@ export class AccountService {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
       if (isPasswordsEqual) {
         return true;
-      } else throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-    } else throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-    return false;
+      } else throw new Error('Wrong credentials provided');
+    } else throw new Error('Wrong credentials provided');
   }
 
   getJwtWithId(userId: number): string {
@@ -65,16 +64,8 @@ export class AccountService {
         email: email,
       },
     });
-  }
-
-  async create(authDto: AuthDto): Promise<AuthEntity | undefined> {
-    return this.authRepository.save(authDto);
-  }
-
-  async getById(id: number): Promise<AuthEntity> {
-    const authEntity = await this.authRepository.findOne(id);
-    if (authEntity) {
-      return authEntity;
-    } else throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+    if (accountWithUser?.user) {
+      return accountWithUser?.user;
+    } else throw new Error('User with this id does not exist');
   }
 }
