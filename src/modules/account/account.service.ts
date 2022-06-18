@@ -5,9 +5,10 @@ import { BcryptService } from 'src/modules/account/bcrypt/bcrypt.service';
 import { Repository } from 'typeorm';
 
 import { UserEntity } from '../users/entities/user.entity';
+import { AccountOutputDto } from './dto/account-output.dto';
 import { AuthDto } from './dto/auth.dto';
-import { AuthOutputDto } from './dto/auth.output-dto';
 import { AccountEntity } from './entities/account.entity';
+import { WrongCredentialsProvidedException } from './exceptions/wrong-credentials-provided.exception';
 
 @Injectable()
 export class AccountService {
@@ -19,7 +20,13 @@ export class AccountService {
   ) {}
 
   async create(authDto: AuthDto): Promise<AccountEntity | undefined> {
-    return this.authRepository.save(authDto);
+    return this.authRepository.save({
+      ...authDto,
+      user: {
+        name: '',
+        privateField: '',
+      },
+    });
   }
 
   async findAccountByEmail(email: string): Promise<AccountEntity | undefined> {
@@ -30,24 +37,16 @@ export class AccountService {
     });
   }
 
-  async registration(authDto: AuthDto): Promise<AuthOutputDto> {
+  async registration(authDto: AuthDto): Promise<AccountOutputDto> {
     if (await this.findAccountByEmail(authDto.email)) {
       throw new Error('Entered email already exist!');
     } else {
-      authDto.password = await this.bcrypt.encodePassword(authDto.password);
-      const authCreateResult = await this.create(authDto);
-      if (authCreateResult) {
-        return {
-          id: authCreateResult.id,
-          email: authCreateResult.email,
-          resultAuth: true,
-        } as AuthOutputDto;
-      } else
-        return {
-          id: -0,
-          email: '',
-          resultAuth: false,
-        } as AuthOutputDto;
+      const password = await this.bcrypt.encodePassword(authDto.password);
+      const account = await this.create({ ...authDto, password });
+      if (!account) {
+        throw new Error('Account was not created');
+      }
+      return AccountOutputDto.fromAccount(account);
     }
   }
 
@@ -57,8 +56,8 @@ export class AccountService {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
       if (isPasswordsEqual) {
         return true;
-      } else throw new Error('Wrong credentials provided');
-    } else throw new Error('Wrong credentials provided');
+      } else throw new WrongCredentialsProvidedException();
+    } else throw new WrongCredentialsProvidedException();
   }
 
   getJwtWithId(userId: number): string {

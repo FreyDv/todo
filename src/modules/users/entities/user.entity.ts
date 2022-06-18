@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+import { AccountEntity } from '../../account/entities/account.entity';
 import { TodoListEntity } from '../../todo-list/entities/todo-list.entity';
 
 export const aliasUserEntity = 'users';
@@ -23,4 +24,10 @@ export class UserEntity {
 
   @OneToMany(() => TodoListEntity, (todoList) => todoList.user)
   todoList: TodoListEntity[];
+
+  @OneToOne(() => AccountEntity, {
+    nullable: false,
+  })
+  @JoinColumn({ name: 'account_id' })
+  account: AccountEntity;
 }

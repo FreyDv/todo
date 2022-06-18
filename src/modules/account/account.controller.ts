@@ -3,8 +3,8 @@ import * as Swagger from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { AccountService } from './account.service';
+import { AccountOutputDto } from './dto/account-output.dto';
 import { AuthDto } from './dto/auth.dto';
-import { AuthOutputDto } from './dto/auth.output-dto';
 import { LocalAuthenticationGuard } from './guard/localAuthentication.guard';
 
 @Swagger.ApiTags('Auth')
@@ -13,7 +13,7 @@ export class AccountController {
   constructor(private readonly authService: AccountService) {}
 
   @Post('/registration')
-  registration(@Body() authDto: AuthDto): Promise<AuthOutputDto> {
+  registration(@Body() authDto: AuthDto): Promise<AccountOutputDto> {
     return this.authService.registration(authDto);
   }
 
@@ -21,7 +21,7 @@ export class AccountController {
   @Post('/login')
   @UseGuards(LocalAuthenticationGuard)
   async authentication(@Body() authDto: AuthDto, @Res() response: Response) {
-    const user = await this.authService.findAccoundByEnail(authDto.email);
+    const user = await this.authService.findAccountByEmail(authDto.email);
     if (user) {
       const userJwt = this.authService.getCookieWithJwtToken(user.id);
       response.setHeader('Set-Cookie', userJwt);

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 
+import { aliasAccountEntity } from '../account/entities/account.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from './entities/user.entity';
+import { aliasUserEntity, UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -21,7 +22,22 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<UserEntity | undefined> {
-    return this.userRepository.findOne(id);
+    return this.userRepository.findOne(id, {
+      relations: ['account'],
+    });
+  }
+
+  findOneQuery(id: number): Promise<UserEntity | undefined> {
+    return this.userRepository.query(
+      `SELECT * FROM users LEFT JOIN account ON users.id=account.user_id WHERE users.id=${id}`,
+    );
+  }
+
+  findOneQb(id: number): Promise<UserEntity | undefined> {
+    const qb = this.userRepository.createQueryBuilder(aliasUserEntity);
+    UsersService.addToQbSelectAccount(qb);
+
+    return qb.where({ id }).getOne();
   }
 
   async remove(id: number): Promise<boolean> {
@@ -32,5 +48,9 @@ export class UsersService {
       }
     }
     return false;
+  }
+
+  private static addToQbSelectAccount(qb: SelectQueryBuilder<UserEntity>): SelectQueryBuilder<UserEntity> {
+    return qb.leftJoinAndSelect(`${aliasUserEntity}.account`, aliasAccountEntity);
   }
 }

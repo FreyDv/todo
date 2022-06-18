@@ -25,6 +25,9 @@ export class HttpUsersService {
   }
   async findOne(id: number): Promise<OutputUserDto> {
     const result = await this.usersService.findOne(id);
+    const resultQuery = await this.usersService.findOneQuery(id);
+    const resultQb = await this.usersService.findOneQb(id);
+    console.log(resultQb);
     if (!result) {
       throw new EntityNotFoundException('User not found');
     }
