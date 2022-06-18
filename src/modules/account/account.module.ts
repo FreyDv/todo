@@ -4,18 +4,17 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from '../users/users.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AccountController } from './account.controller';
+import { AccountService } from './account.service';
 import { BcryptModule } from './bcrypt/bcrypt.module';
 import JwtConfig from './config/jwt.config';
-import { AuthEntity } from './entities/auth.entity';
+import { AccountEntity } from './entities/account.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([AuthEntity]),
+    TypeOrmModule.forFeature([AccountEntity]),
     BcryptModule,
     PassportModule,
     ConfigModule.forRoot({
@@ -29,10 +28,8 @@ import { LocalStrategy } from './strategy/local.strategy';
         signOptions: { expiresIn: configService.get('JWT_EXPIRATION_TIME') },
       }),
     }),
-    UsersModule,
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService, JwtStrategy, PassportModule],
-  controllers: [AuthController],
+  providers: [AccountService, LocalStrategy, JwtStrategy],
+  controllers: [AccountController],
 })
-export class AuthModule {}
+export class AccountModule {}

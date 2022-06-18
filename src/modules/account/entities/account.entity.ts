@@ -2,10 +2,10 @@ import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserEntity } from '../../users/entities/user.entity';
 
-export const aliasUserEntity = 'auth';
+export const aliasUserEntity = 'account';
 
 @Entity(aliasUserEntity)
-export class AuthEntity {
+export class AccountEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
