@@ -1,29 +1,38 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BcryptService } from 'src/modules/auth/bcrypt/bcrypt.service';
+import { BcryptService } from 'src/modules/account/bcrypt/bcrypt.service';
 import { Repository } from 'typeorm';
 
+import { UserEntity } from '../users/entities/user.entity';
 import { AuthDto } from './dto/auth.dto';
 import { AuthOutputDto } from './dto/auth.output-dto';
-import { AuthEntity } from './entities/auth.entity';
+import { AccountEntity } from './entities/account.entity';
 
 @Injectable()
-export class AuthService {
+export class AccountService {
   constructor(
-    @InjectRepository(AuthEntity)
-    private readonly authRepository: Repository<AuthEntity>,
-
-    // private readonly usersService: UsersService,
-
+    @InjectRepository(AccountEntity)
+    private readonly authRepository: Repository<AccountEntity>,
     private readonly bcrypt: BcryptService,
-
     private readonly jwtService: JwtService,
   ) {}
 
+  async create(authDto: AuthDto): Promise<AccountEntity | undefined> {
+    return this.authRepository.save(authDto);
+  }
+
+  async findAccountByEmail(email: string): Promise<AccountEntity | undefined> {
+    return await this.authRepository.findOne({
+      where: {
+        email: email,
+      },
+    });
+  }
+
   async registration(authDto: AuthDto): Promise<AuthOutputDto> {
-    if (await this.findAuthCardByEmail(authDto.email)) {
-      throw new HttpException('This email address is already being used!', HttpStatus.INTERNAL_SERVER_ERROR);
+    if (await this.findAccountByEmail(authDto.email)) {
+      throw new Error('Entered email already exist!');
     } else {
       authDto.password = await this.bcrypt.encodePassword(authDto.password);
       const authCreateResult = await this.create(authDto);
@@ -43,14 +52,13 @@ export class AuthService {
   }
 
   async authentication(authDto: AuthDto): Promise<boolean> {
-    const authEntity = await this.findAuthCardByEmail(authDto.email);
+    const authEntity = await this.findAccountByEmail(authDto.email);
     if (authEntity) {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
       if (isPasswordsEqual) {
         return true;
-      } else throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-    } else throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-    return false;
+      } else throw new Error('Wrong credentials provided');
+    } else throw new Error('Wrong credentials provided');
   }
 
   getJwtWithId(userId: number): string {
@@ -63,22 +71,12 @@ export class AuthService {
     return `Authentication=${jwtWithId}; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
   }
 
-  async findAuthCardByEmail(email: string): Promise<AuthEntity | undefined> {
-    return await this.authRepository.findOne({
-      where: {
-        email: email,
-      },
+  async getUser(id: number): Promise<UserEntity> {
+    const accountWithUser = await this.authRepository.findOne(id, {
+      relations: ['user'],
     });
-  }
-
-  async create(authDto: AuthDto): Promise<AuthEntity | undefined> {
-    return this.authRepository.save(authDto);
-  }
-
-  async getById(id: number): Promise<AuthEntity> {
-    const authEntity = await this.authRepository.findOne(id);
-    if (authEntity) {
-      return authEntity;
-    } else throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+    if (accountWithUser?.user) {
+      return accountWithUser?.user;
+    } else throw new Error('User with this id does not exist');
   }
 }

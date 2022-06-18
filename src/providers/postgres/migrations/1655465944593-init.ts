@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class init1653116517454 implements MigrationInterface {
-  name = 'init1653116517454';
+export class init1655465944593 implements MigrationInterface {
+  name = 'init1655465944593';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -11,14 +11,20 @@ export class init1653116517454 implements MigrationInterface {
       `CREATE TABLE "todo-list" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "is-done" boolean NOT NULL, "user-id" integer, CONSTRAINT "PK_45bb5da8cc53815d58f810dd2d4" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "account" ("id" SERIAL NOT NULL, "email" character varying NOT NULL, "password" character varying NOT NULL, "user_id" integer, CONSTRAINT "UQ_4c8f96ccf523e9a3faefd5bdd4c" UNIQUE ("email"), CONSTRAINT "REL_efef1e5fdbe318a379c06678c5" UNIQUE ("user_id"), CONSTRAINT "PK_54115ee388cdb6d86bb4bf5b2ea" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `ALTER TABLE "todo-list" ADD CONSTRAINT "FK_95af922cf971f3a88e076aad828" FOREIGN KEY ("user-id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "account" ADD CONSTRAINT "FK_efef1e5fdbe318a379c06678c51" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "todo-list" DROP CONSTRAINT "FK_95af922cf971f3a88e076aad828"`,
-    );
+    await queryRunner.query(`ALTER TABLE "account" DROP CONSTRAINT "FK_efef1e5fdbe318a379c06678c51"`);
+    await queryRunner.query(`ALTER TABLE "todo-list" DROP CONSTRAINT "FK_95af922cf971f3a88e076aad828"`);
+    await queryRunner.query(`DROP TABLE "account"`);
     await queryRunner.query(`DROP TABLE "todo-list"`);
     await queryRunner.query(`DROP TABLE "users"`);
   }

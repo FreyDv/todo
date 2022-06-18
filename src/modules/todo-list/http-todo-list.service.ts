@@ -10,9 +10,7 @@ import { TodoListService } from './todo-list.service';
 export class HttpTodoListService {
   constructor(private readonly todoListService: TodoListService) {}
 
-  async create(
-    createTodoListDto: CreateTodoListDto,
-  ): Promise<OutputTodoListDto> {
+  async create(createTodoListDto: CreateTodoListDto): Promise<OutputTodoListDto> {
     const result = await this.todoListService.create(createTodoListDto);
     return OutputTodoListDto.fromTodoListEntity(result);
   }
@@ -28,10 +26,7 @@ export class HttpTodoListService {
     return result;
   }
 
-  async update(
-    id: number,
-    updateTodoListDto: UpdateTodoListDto,
-  ): Promise<OutputTodoListDto> {
+  async update(id: number, updateTodoListDto: UpdateTodoListDto): Promise<OutputTodoListDto> {
     const result = await this.todoListService.update(id, updateTodoListDto);
     return OutputTodoListDto.fromTodoListEntity(result);
   }

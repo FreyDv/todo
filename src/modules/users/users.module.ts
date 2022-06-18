@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { BcryptModule } from '../auth/bcrypt/bcrypt.module';
+import { BcryptModule } from '../account/bcrypt/bcrypt.module';
 import usersConfig from './config/user.config';
 import { UserEntity } from './entities/user.entity';
 import { HttpUsersService } from './http-users.service';
@@ -16,7 +16,6 @@ import { UsersService } from './users.service';
     ConfigModule.forRoot({ load: [usersConfig] }),
     BcryptModule,
     JwtModule,
-    // AuthModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, HttpUsersService],
