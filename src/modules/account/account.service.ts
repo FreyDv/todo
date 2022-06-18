@@ -71,11 +71,9 @@ export class AccountService {
     return `Authentication=${jwtWithId}; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
   }
 
-  async findAuthCardByEmail(email: string): Promise<AuthEntity | undefined> {
-    return await this.authRepository.findOne({
-      where: {
-        email: email,
-      },
+  async getUser(id: number): Promise<UserEntity> {
+    const accountWithUser = await this.authRepository.findOne(id, {
+      relations: ['user'],
     });
     if (accountWithUser?.user) {
       return accountWithUser?.user;
