@@ -12,6 +12,7 @@ specifiers:
   '@nestjs/swagger': ^5.2.1
   '@nestjs/testing': ^8.0.0
   '@nestjs/typeorm': ^8.0.3
+  '@ntegral/nestjs-sendgrid': ^1.0.0
   '@sendgrid/mail': ^7.7.0
   '@types/bcrypt': ^5.0.0
   '@types/cookie-parser': ^1.4.3
@@ -62,6 +63,7 @@ dependencies:
   '@nestjs/platform-express': 8.4.5_ydewkhgqdrhc2o62hf5fyq4ami
   '@nestjs/swagger': 5.2.1_uifqw3qf2ssves4szogqr5xa4i
   '@nestjs/typeorm': 8.0.3_romqothtzaoqqrwlx2i25asuca
+  '@ntegral/nestjs-sendgrid': 1.0.0
   '@sendgrid/mail': 7.7.0
   '@types/bcrypt': 5.0.0
   '@types/passport-jwt': 3.0.6
@@ -1143,6 +1145,15 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+
+  /@ntegral/nestjs-sendgrid/1.0.0:
+    resolution: {integrity: sha512-M7/xkb6nr++dZJi4+t1PAhygarNNWe3u0n1I5EXD6u3EsnLu7bHl23RTy3X9C/7zPLSg31AhNp5mv6IO4nYlew==}
+    dependencies:
+      '@sendgrid/mail': 7.7.0
+      deepmerge: 4.2.2
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /@nuxtjs/opencollective/0.3.2:
     resolution: {integrity: sha512-um0xL3fO7Mf4fDxcqx9KryrB7zgRM5JSlvGN5AGkP6JLM5XEKyjeAiPbNxdXVXQ16isuAhYpvP88NgL2BGd6aA==}
