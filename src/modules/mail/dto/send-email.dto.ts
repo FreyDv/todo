@@ -5,5 +5,10 @@ export class SendEmailDto {
   email: string;
 
   @IsUrl()
-  msg: string;
+  url: string;
+
+  constructor(email, msg) {
+    this.email = email;
+    this.url = msg;
+  }
 }

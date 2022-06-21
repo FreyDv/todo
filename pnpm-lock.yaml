@@ -901,7 +901,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
-      - vue-template-compiler
+      - vue-templates-compiler
       - webpack-cli
     dev: true
 
