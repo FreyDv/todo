@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { AccountEntity } from '../../account/entities/account.entity';
 import { TodoListEntity } from '../../todo-list/entities/todo-list.entity';
