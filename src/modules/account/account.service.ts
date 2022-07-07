@@ -23,15 +23,6 @@ export class AccountService {
   ) {
     this.memoryOfSendingValidationMessage = new Array<ValidMsgDto>();
   }
-
-  async findAccountByEmail(email: string): Promise<AccountEntity | undefined> {
-    return await this.authRepository.findOne({
-      where: {
-        email: email,
-      },
-    });
-  }
-
   async registration(authDto: AuthDto): Promise<AccountOutputDto> {
     const accountWitheSameEmail = await this.findAccountByEmail(authDto.email);
     if (accountWitheSameEmail) {
@@ -46,8 +37,7 @@ export class AccountService {
       return AccountOutputDto.fromAccount(account);
     }
   }
-
-  async authentication(authDto: AuthDto): Promise<boolean> {
+  async authentication(authDto: AuthDto): Promise<UserEntity | undefined> {
     const authEntity = await this.findAccountByEmail(authDto.email);
     if (authEntity) {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
@@ -183,12 +173,10 @@ export class AccountService {
     const payload = { id: userId };
     return this.jwtService.sign(payload);
   }
-
   getCookieWithJwtToken(userId: number): string {
     const jwtWithId = this.getJwtWithId(userId);
     return `Authentication=${jwtWithId}; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
   }
-
   async getUser(id: number): Promise<UserEntity> {
     const accountWithUser = await this.authRepository.findOne(id, {
       relations: ['user'],
