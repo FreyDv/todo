@@ -1,13 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/modules/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
+import { SendEmailDto } from '../mail/dto/send-email.dto';
+import { MailService } from '../mail/mail.service';
 import { BcryptService } from './bcrypt/bcrypt.service';
 import { AccountOutputDto } from './dto/account-output.dto';
 import { AuthDto } from './dto/auth.dto';
+import { ValidMsgDto } from './dto/valid-msg.dto';
 import { AccountEntity } from './entities/account.entity';
+import { AuthProvider } from './enums/auth-provider.enum';
 import { WrongCredentialsProvidedException } from './exceptions/wrong-credentials-provided.exception';
 
 @Injectable()
