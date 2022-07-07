@@ -42,7 +42,12 @@ export class AccountService {
     if (authEntity) {
       const isPasswordsEqual = await this.bcrypt.comparePassword(authEntity.password, authDto.password);
       if (isPasswordsEqual) {
-        return true;
+        if (authEntity.verified) {
+          if (authEntity.user) {
+            return authEntity.user;
+          } else {
+          }
+        }
       } else throw new WrongCredentialsProvidedException();
     } else throw new WrongCredentialsProvidedException();
   }
@@ -184,5 +189,24 @@ export class AccountService {
     if (accountWithUser?.user) {
       return accountWithUser?.user;
     } else throw new Error('User with this id does not exist');
+  }
+  private async generateValidationMsg(id: number): Promise<string> {
+    const expiration_time = this.config.get<number>('VALIDATION_STRING_MSG_EXPIRATION_TIME') || 10;
+    const exTime = Date.now() + expiration_time * 60000;
+    const msg = await this.bcrypt.encodePassword(`${id}${exTime}`);
+    this.memoryOfSendingValidationMessage.push(new ValidMsgDto(id, msg, exTime));
+    return msg;
+  }
+  private generateValidationUrl(msg: string): string {
+    const PROTOCOL = 'http';
+    const HOST = this.config.get<string>('DB_HOST');
+    const PORT = this.config.get<string>('PORT');
+    return `${PROTOCOL}://${HOST}:${PORT}/auth/validate?msg=${msg}`;
+  }
+  private async sendValidationMail(id: number, email: string) {
+    const msg = await this.generateValidationMsg(id);
+    const url = this.generateValidationUrl(msg);
+    await this.mail.send(new SendEmailDto(email, url));
+    console.log(url);
   }
 }
