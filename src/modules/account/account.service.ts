@@ -12,21 +12,16 @@ import { WrongCredentialsProvidedException } from './exceptions/wrong-credential
 
 @Injectable()
 export class AccountService {
+  memoryOfSendingValidationMessage: Array<ValidMsgDto>;
   constructor(
+    private readonly config: ConfigService,
     @InjectRepository(AccountEntity)
     private readonly authRepository: Repository<AccountEntity>,
     private readonly bcrypt: BcryptService,
     private readonly jwtService: JwtService,
-  ) {}
-
-  async create(authDto: AuthDto): Promise<AccountEntity | undefined> {
-    return this.authRepository.save({
-      ...authDto,
-      user: {
-        name: '',
-        privateField: '',
-      },
-    });
+    private readonly mail: MailService,
+  ) {
+    this.memoryOfSendingValidationMessage = new Array<ValidMsgDto>();
   }
 
   async findAccountByEmail(email: string): Promise<AccountEntity | undefined> {
