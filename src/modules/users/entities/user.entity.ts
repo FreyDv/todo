@@ -16,18 +16,9 @@ export class UserEntity {
   @Column({ nullable: false })
   privateField: string;
 
-  // @Column({ unique: true })
-  // email: string;
-  //
-  // @Column()
-  // password: string;
-
   @OneToMany(() => TodoListEntity, (todoList) => todoList.user)
   todoList: TodoListEntity[];
 
-  @OneToOne(() => AccountEntity, {
-    nullable: false,
-  })
-  @JoinColumn({ name: 'account_id' })
-  account: AccountEntity;
+  @OneToMany(() => AccountEntity, (account) => account.user)
+  account: AccountEntity[];
 }
