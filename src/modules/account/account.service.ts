@@ -33,7 +33,8 @@ export class AccountService {
   }
 
   async registration(authDto: AuthDto): Promise<AccountOutputDto> {
-    if (await this.findAccountByEmail(authDto.email)) {
+    const accountWitheSameEmail = await this.findAccountByEmail(authDto.email);
+    if (accountWitheSameEmail) {
       throw new Error('Entered email already exist!');
     } else {
       const password = await this.bcrypt.encodePassword(authDto.password);
@@ -41,6 +42,7 @@ export class AccountService {
       if (!account) {
         throw new Error('Account was not created');
       }
+      await this.sendValidationMail(account.id, account.email);
       return AccountOutputDto.fromAccount(account);
     }
   }
