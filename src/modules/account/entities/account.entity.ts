@@ -15,9 +15,7 @@ export class AccountEntity {
   @Column({ nullable: false })
   password: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.id, {
-    cascade: ['insert'],
-  })
+  @ManyToOne(() => UserEntity, (user) => user.account)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 }
