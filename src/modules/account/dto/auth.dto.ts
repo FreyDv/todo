@@ -7,4 +7,9 @@ export class AuthDto {
   @IsString()
   @MinLength(4)
   password: string;
+
+  constructor(email, password = '!NOT A PASSWORD') {
+    this.email = email;
+    this.password = password;
+  }
 }
