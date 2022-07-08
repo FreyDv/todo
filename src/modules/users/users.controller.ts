@@ -1,11 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import * as Swagger from '@nestjs/swagger';
 
-import { CurrentUserAuth } from '../../common/decorators/current-user-auth.decorator';
-import JwtAuthenticationGuard from '../account/guard/JwtAuthenticationGuard';
+import { CurrentAccountId } from '../../common/decorators/current-user-auth.decorator';
+import JwtAuthenticationGuard from '../account/guard/jwtAuthenticationGuard';
 import { ForbiddenUser } from './decorators/forbidden-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
-import { OutputMeUserDto } from './dto/output-me-user.dto';
 import { OutputUserDto } from './dto/output-user.dto';
 import { HttpUsersService } from './http-users.service';
 
@@ -15,8 +14,9 @@ export class UsersController {
   constructor(private readonly httpUsersService: HttpUsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto): Promise<OutputUserDto> {
-    return this.httpUsersService.create(createUserDto);
+  @UseGuards(JwtAuthenticationGuard)
+  create(@CurrentAccountId() accountId: number, @Body() createUserDto: CreateUserDto): Promise<OutputUserDto> {
+    return this.httpUsersService.create(accountId, createUserDto);
   }
 
   @Swagger.ApiOkResponse({
@@ -30,6 +30,7 @@ export class UsersController {
     description: 'Internal server error',
   })
   @Get()
+  @UseGuards(JwtAuthenticationGuard)
   findAll(): Promise<OutputUserDto[]> {
     return this.httpUsersService.findAll();
   }
@@ -51,11 +52,13 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthenticationGuard)
   remove(@Param('id') id: string): Promise<boolean> {
     return this.httpUsersService.remove(+id);
   }
 
   @ForbiddenUser()
+  @UseGuards(JwtAuthenticationGuard)
   @Get('user/me')
   @UseGuards(JwtAuthenticationGuard)
   getMe(@CurrentUserAuth('id') userId: number): Promise<OutputMeUserDto> {
