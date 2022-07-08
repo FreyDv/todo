@@ -60,9 +60,7 @@ export class UsersController {
   @ForbiddenUser()
   @UseGuards(JwtAuthenticationGuard)
   @Get('user/me')
-  @UseGuards(JwtAuthenticationGuard)
-  getMe(@CurrentUserAuth('id') userId: number): Promise<OutputMeUserDto> {
-    console.log('CurrentUserAuth', userId);
-    return this.httpUsersService.getMe(userId || 1);
+  getMe(@CurrentAccountId() accountId: number) {
+    return this.httpUsersService.getMe(accountId);
   }
 }
