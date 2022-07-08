@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 
-import { aliasAccountEntity } from '../account/entities/account.entity';
+import { AccountEntity, aliasAccountEntity } from '../account/entities/account.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { aliasUserEntity, UserEntity } from './entities/user.entity';
 
@@ -10,7 +10,7 @@ import { aliasUserEntity, UserEntity } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>, // private readonly account: AccountService,
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -25,6 +25,18 @@ export class UsersService {
     return this.userRepository.findOne(id, {
       relations: ['account'],
     });
+  }
+
+  findByAccountId(accountId: number): Promise<UserEntity | undefined> {
+    return this.userRepository
+      .createQueryBuilder(aliasUserEntity)
+      .innerJoin(
+        AccountEntity,
+        aliasAccountEntity,
+        `${aliasUserEntity}.id = ${aliasAccountEntity}.user_id AND ${aliasAccountEntity}.id = :accountId`,
+        { accountId },
+      )
+      .getOne();
   }
 
   findOneQuery(id: number): Promise<UserEntity | undefined> {
