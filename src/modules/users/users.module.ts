@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { AccountModule } from '../account/account.module';
 import { BcryptModule } from '../account/bcrypt/bcrypt.module';
 import usersConfig from './config/user.config';
 import { UserEntity } from './entities/user.entity';
@@ -16,13 +17,10 @@ import { UsersService } from './users.service';
     ConfigModule.forRoot({ load: [usersConfig] }),
     BcryptModule,
     JwtModule,
+    AccountModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, HttpUsersService],
   exports: [UsersService],
 })
-export class UsersModule /*implements NestModule*/ {
-  // configure(consumer: MiddlewareConsumer): void {
-  //   // consumer.apply(AddUserToReqMiddleware).forRoutes(UsersController);
-  // }
-}
+export class UsersModule {}

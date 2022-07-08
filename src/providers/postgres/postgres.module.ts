@@ -21,6 +21,8 @@ import databaseConfig from './config/database.config';
         cli: config.get<string>('database.cli'),
         migrationsRun: config.get<boolean>('database.migrationsRun'),
         synchronize: config.get<boolean>('database.synchronize'),
+        logger: 'advanced-console',
+        logging: 'all',
       }),
       inject: [ConfigService],
     } as TypeOrmModuleAsyncOptions),

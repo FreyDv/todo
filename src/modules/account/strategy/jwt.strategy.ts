@@ -3,8 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-
-import { AccountService } from '../account.service';
+import { AccountService } from 'src/modules/account/account.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -19,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(id: number) {
-    return this.authService.getUser(id);
+  async validate({ id }) {
+    return { accountId: id };
   }
 }
