@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AccountModule } from '../account/account.module';
 import { BcryptModule } from '../account/bcrypt/bcrypt.module';
+import { RedisCashModule } from '../redis-cacsh/redis-cash.module';
 import usersConfig from './config/user.config';
 import { UserEntity } from './entities/user.entity';
 import { HttpUsersService } from './http-users.service';
@@ -18,6 +19,7 @@ import { UsersService } from './users.service';
     BcryptModule,
     JwtModule,
     AccountModule,
+    RedisCashModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, HttpUsersService],

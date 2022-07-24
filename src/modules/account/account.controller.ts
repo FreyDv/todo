@@ -8,6 +8,7 @@ import { AuthDto } from './dto/auth.dto';
 import { ValidMsgDto } from './dto/valid-msg.dto';
 import GoogleAuthenticationGuard from './guard/googleAuthenticationGuard';
 import { LocalAuthenticationGuard } from './guard/localAuthentication.guard';
+import snapchatAuthenticationGuard from './guard/snapchatAuthenticationGuard';
 
 @Swagger.ApiTags('Auth')
 @Controller('auth')
@@ -28,6 +29,22 @@ export class AccountController {
     if (account) {
       this.sendJwtWithCookie(account, response);
     }
+  }
+
+  @Get('/with/snapchat')
+  @UseGuards(snapchatAuthenticationGuard)
+  async snapchatAuth(@Req() req) {
+    return req;
+  }
+
+  @Get('/snapchat/callback')
+  @UseGuards(snapchatAuthenticationGuard)
+  async snapchatAuthRedirect(@Req() req, @Res() response: Response) {
+    const account = await this.authService.snapchatLogin(req);
+    if (account) {
+      return this.sendJwtWithCookie(account, response);
+    }
+    return undefined;
   }
 
   @Get('/with/google')
