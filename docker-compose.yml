@@ -38,6 +38,23 @@ services:
 #        - ./_volume/pgadmin:/var/lib/pgadmin
       container_name: pgadmin4
 
+  redis:
+    image: "redis:alpine"
+    container_name: readis
+    ports:
+      - "6379:6379"
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+
+
 networks:
   db:
     driver: bridge
