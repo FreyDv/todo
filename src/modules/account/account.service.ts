@@ -87,34 +87,26 @@ export class AccountService {
     return account[0];
   }
   private async findAccountsByEmail(email: string): Promise<AccountEntity[]> {
-    const account = await this.authRepository.find({
+    return await this.authRepository.find({
       where: {
         email: email,
         verified: true,
       },
       relations: ['user'],
     });
-    return account;
+  }
+  async snapchatLogin(req) {
+    if (!req.user) throw new Error('Can not get User from Snapchat!');
+    return await this.loginProcess(req.user._json.data.me, AuthProvider.Snapchat);
   }
   async googleLogin(req) {
     if (!req.user) throw new Error('Can not get User from Google!');
-    let account: AccountEntity;
-    const userGoogle = req.user._json;
-    account = await this.findAccountByEmail(userGoogle.email, AuthProvider.Google);
-    if (account) {
-      if (account.user && account.verified) {
-        return account;
-      }
-    } else {
-      const resultCreating = await this.create(new AuthDto(userGoogle.email), AuthProvider.Google);
-      if (!resultCreating) throw new Error('Can not create account!');
-      account = resultCreating;
-    }
-    const userAlreadyExists = await this.findUserIfEmailAlreadyExists(account);
-    if (userAlreadyExists) {
-      account.user = userAlreadyExists;
-      return await this.updateAccount(account);
-    }
+    return await this.loginProcess(req.user._json, AuthProvider.Google);
+  }
+  async loginProcess(accountSocial, provider: AuthProvider) {
+    const resultCreating = await this.create(new AuthDto(accountSocial.displayName), provider);
+    if (!resultCreating) throw new Error('Can not create account!');
+    return resultCreating;
   }
   updateAccount(account: AccountEntity) {
     return this.authRepository.save(account);

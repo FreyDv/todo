@@ -13,6 +13,7 @@ import { AccountEntity } from './entities/account.entity';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
+import { SnapchatStrategy } from './strategy/snapchat.strategy';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { LocalStrategy } from './strategy/local.strategy';
       }),
     }),
   ],
-  providers: [AccountService, LocalStrategy, JwtStrategy, GoogleStrategy],
+  providers: [AccountService, LocalStrategy, JwtStrategy, GoogleStrategy, SnapchatStrategy],
   controllers: [AccountController],
   exports: [AccountService],
 })
